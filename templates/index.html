@@ -17,9 +17,9 @@
     <div class="container">
             <form action="/add_task" method="post">
 
-                <div class="ui center aligned basic segment" style="top:80px">
+                <div class="ui center aligned basic segment">
                     <div class="ui left icon action input">
-                        <i class="icon coffee"></i>
+                        <i class="icon pencil alternate"></i>
                         <input type="text" name="title" placeholder="Enter new task..." />
                         <button type="submit" class="ui basic teal button">
                             <i class="icon plus"></i>
@@ -32,65 +32,99 @@
                     </h2>
 
                     <table class="ui selectable table">
-                        <tbody>
-                            {% for task in task_list %}
-                                <tr class="top aligned">
-                                    <td>
-                                        <b>{{ loop.index }}. {{ task.title }}</b>
-                                        <br>
-                                        {% if task.status == 'Not started' %}
-                                            <div class="ui pink horizontal label">{{ task.status }}</div>
-                                        {% else %}
-                                            <div class="ui pink horizontal disabled label">Started</div> ->
-                                            {% if task.status == 'In progress' %}
-                                                <div class="ui blue horizontal label">{{ task.status }}</div>
+                        {% if total_tasks > 0 %}
+                            <tbody>
+                                {% for task in task_list %}
+                                    <tr class="top aligned">
+                                        <td>
+                                            <b>{{ loop.index }}. {{ task.title }}</b>
+                                            <br>
+                                            <div class="ui steps">
+
+
+                                                {% if task.status == 'Not started' %}
+                                                    <div class="active step">
+                                                        <div class="content">
+                                                            <div class="ui pink label">{{ task.status }}</div>
+                                                        </div>
+                                                    </div>
+
+                                                {% else %}
+                                                    <div class="completed step">
+                                                        <div class="content">
+                                                            <div class="ui pink disabled label">Started</div>
+                                                        </div>
+                                                    </div>
+                                                    {% if task.status == 'In progress' %}
+                                                        <div class="active step">
+                                                            <div class="content">
+                                                                <div class="ui blue label">{{ task.status }}</div>
+                                                            </div>
+                                                        </div>
+
+                                                    {% else %}
+                                                        <div class="completed step">
+
+                                                            <div class="content">
+                                                                <div class="ui blue disabled label">In progress</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="active step">
+                                                            <div class="content">
+                                                                <div class="ui teal label">{{ task.status }}</div>
+                                                            </div>
+                                                        </div>
+
+                                                    {% endif %}
+
+                                                {% endif %}
+                                            </div>
+                                        </td>
+
+                                        <td class="right aligned">
+                                            {% if task.status == 'Not started' %}
+<!--                                                <button class="ui disabled button">Back</button>-->
                                             {% else %}
-                                                <div class="ui blue horizontal disabled label">In progress</div> ->
-                                                <div class="ui teal horizontal label">{{ task.status }}</div>
+                                                <a href="/regress_task/{{ task.id }}">
+                                                     <div class="ui animated basic violet button" tabindex="0">
+                                                         <div class="visible content">Back</div>
+                                                         <div class="hidden content">
+                                                             <i class="icon left arrow"></i>
+                                                         </div>
+                                                    </div>
+                                                </a>
                                             {% endif %}
 
-                                        {% endif %}
+                                            {% if task.status == 'Completed' %}
+<!--                                                <button class="ui disabled button">Completed</button>-->
+                                            {% else %}
+                                                <a href="/progress_task/{{ task.id }}">
+                                                     <div class="ui animated basic teal button" tabindex="0">
+                                                         <div class="visible content">
+                                                             {% if task.status == 'Not started' %}Start{% endif %}
+                                                             {% if task.status == 'In progress' %}Finish{% endif %}
+                                                         </div>
+                                                         <div class="hidden content">
+                                                             <i class="icon right arrow"></i>
+                                                         </div>
+                                                    </div>
+                                                </a>
+                                            {% endif %}
 
-                                    </td>
-
-                                    <td class="right aligned">
-                                        {% if task.status == 'Not started' %}
-                                            <button class="ui disabled button">Back</button>
-                                        {% else %}
-                                            <a href="/regress_task/{{ task.id }}">
-                                                 <div class="ui animated basic violet button" tabindex="0">
-                                                     <div class="visible content">Back</div>
-                                                     <div class="hidden content">
-                                                         <i class="icon left arrow"></i>
-                                                     </div>
+                                            <a href="/delete_task/{{ task.id }}">
+                                                <div class="ui compact icon pink button" tabindex="0">
+                                                    <i class="icon trash alternate outline"></i>
                                                 </div>
                                             </a>
-                                        {% endif %}
+                                        </td>
 
-                                        {% if task.status == 'Completed' %}
-                                            <button class="ui disabled button">Next</button>
-                                        {% else %}
-                                            <a href="/progress_task/{{ task.id }}">
-                                                 <div class="ui animated basic teal button" tabindex="0">
-                                                     <div class="visible content">Next</div>
-                                                     <div class="hidden content">
-                                                         <i class="icon right arrow"></i>
-                                                     </div>
-                                                </div>
-                                            </a>
-                                        {% endif %}
-
-                                        <a href="/delete_task/{{ task.id }}">
-                                            <div class="ui compact icon pink button" tabindex="0">
-                                                <i class="icon trash alternate outline"></i>
-                                            </div>
-                                        </a>
-                                    </td>
-
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <h3 class="ui center aligned header">No tasks yet...</h3>
+                    {% endif %}
                 </div>
             </form>
         <div class="bot_div">

@@ -11,12 +11,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 @app.route('/')
 def index():
     task_list = Task.query.all()
-    return render_template('index.html', task_list=task_list)
+    total_tasks = len(task_list)
+    return render_template('index.html', task_list=task_list, total_tasks=total_tasks)
 
 @app.route('/add_task', methods=['POST'])
 def add_task():
     title = request.form.get('title')
-    new_task = Task(title=title, completed=False)
+    new_task = Task(title=title, status=TASK_STATUS[0])
     db.session.add(new_task)
     db.session.commit()
     return redirect(url_for('index'))
