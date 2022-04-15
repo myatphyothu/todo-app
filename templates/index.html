@@ -8,70 +8,96 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
 
+    <div class="container">
+            <form action="/add_task" method="post">
 
-    <form action="/add_task" method="post">
-        <div class="ui center aligned basic segment">
-            <div class="ui left icon action input">
-                <i class="icon coffee"></i>
-                <input type="text" name="title" placeholder="Enter new task..." />
-                <button type="submit" class="ui button">
-                    <i class="icon plus"></i>
-                    Add Task
-                </button>
-            </div>
+                <div class="ui center aligned basic segment" style="top:80px">
+                    <div class="ui left icon action input">
+                        <i class="icon coffee"></i>
+                        <input type="text" name="title" placeholder="Enter new task..." />
+                        <button type="submit" class="ui basic teal button">
+                            <i class="icon plus"></i>
+                            Add Task
+                        </button>
+                    </div>
+                    <h2 class="ui horizontal divider">
+                        <i class="icon clipboard list"></i>
+                        My ToDo List
+                    </h2>
+
+                    <table class="ui selectable table">
+                        <tbody>
+                            {% for task in task_list %}
+                                <tr class="top aligned">
+                                    <td>
+                                        <b>{{ loop.index }}. {{ task.title }}</b>
+                                        <br>
+                                        {% if task.status == 'Not started' %}
+                                            <div class="ui pink horizontal label">{{ task.status }}</div>
+                                        {% else %}
+                                            <div class="ui pink horizontal disabled label">Started</div> ->
+                                            {% if task.status == 'In progress' %}
+                                                <div class="ui blue horizontal label">{{ task.status }}</div>
+                                            {% else %}
+                                                <div class="ui blue horizontal disabled label">In progress</div> ->
+                                                <div class="ui teal horizontal label">{{ task.status }}</div>
+                                            {% endif %}
+
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td class="right aligned">
+                                        {% if task.status == 'Not started' %}
+                                            <button class="ui disabled button">Back</button>
+                                        {% else %}
+                                            <a href="/regress_task/{{ task.id }}">
+                                                 <div class="ui animated basic violet button" tabindex="0">
+                                                     <div class="visible content">Back</div>
+                                                     <div class="hidden content">
+                                                         <i class="icon left arrow"></i>
+                                                     </div>
+                                                </div>
+                                            </a>
+                                        {% endif %}
+
+                                        {% if task.status == 'Completed' %}
+                                            <button class="ui disabled button">Next</button>
+                                        {% else %}
+                                            <a href="/progress_task/{{ task.id }}">
+                                                 <div class="ui animated basic teal button" tabindex="0">
+                                                     <div class="visible content">Next</div>
+                                                     <div class="hidden content">
+                                                         <i class="icon right arrow"></i>
+                                                     </div>
+                                                </div>
+                                            </a>
+                                        {% endif %}
+
+                                        <a href="/delete_task/{{ task.id }}">
+                                            <div class="ui compact icon pink button" tabindex="0">
+                                                <i class="icon trash alternate outline"></i>
+                                            </div>
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        <div class="bot_div">
+
+
 
         </div>
-    </form>
-
-    <h2 class="ui horizontal divider">
-        <i class="icon clipboard list"></i>
-        My ToDo List
-    </h2>
-
-    <table class="ui selectable table">
-        <tbody>
-    {% for task in task_list %}
-        <tr class="top aligned">
-            <td class="top aligned">
-                {{ loop.index }}. {{ task.title }}
-                {% if task.completed == False %}
-                    | Pending...
-                {% else %}
-                    | Completed
-                {% endif %}
-                <br>
-
-                <a href="/update_task/{{ task.id }}">
-                     <div class="ui animated teal button" tabindex="0">
-                         <div class="visible content">Update</div>
-                         <div class="hidden content">
-                             <i class="icon edit"></i>
-                         </div>
-                    </div>
-                </a>
-                <a href="/delete_task/{{ task.id }}">
-                    <div class="ui animated pink button" tabindex="0">
-                         <div class="visible content">Delete</div>
-                         <div class="hidden content">
-                             <i class="icon trash alternate outline"></i>
-                         </div>
-                    </div>
-                </a>
-            </td>
-
-        </tr>
-
-
-
-
-
-    {% endfor %}
-        </tbody>
-    </table>
-
+    </div>
 </body>
 </html>
