@@ -6,9 +6,7 @@ db = SQLAlchemy()
 TASK_STATUS = ('Not started', 'In progress', 'Completed')
 
 class Status(db.Model):
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
+    name = db.Column(db.String(50), primary_key=True)
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)

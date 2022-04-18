@@ -70,8 +70,9 @@ def create_sample_task():
 
 def create_status():
     for status in TASK_STATUS:
-        print(status)
-        db.session.add(Status(name=status))
+        exists = db.session.query(Status.name).filter_by(name=status).first()
+        if not exists:
+            db.session.add(Status(name=status))
     db.session.commit()
 
 def init_db():
@@ -80,12 +81,8 @@ def init_db():
     db.create_all()
 
 init_db()
-#create_status()
+create_status()
 
 if __name__ == '__main__':
-    #init_db()
-
-    #create_sample_task()
-    #create_status()
 
     app.run()
