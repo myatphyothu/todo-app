@@ -81,7 +81,6 @@ def init_db():
 
 init_db()
 #create_status()
-app.run()
 
 if __name__ == '__main__':
     #init_db()
@@ -89,4 +88,4 @@ if __name__ == '__main__':
     #create_sample_task()
     #create_status()
 
-    app.run(debug=True)
+    app.run()
