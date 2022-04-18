@@ -79,6 +79,8 @@ def init_db():
     db.init_app(app)
     db.create_all()
 
+init_db()
+
 if __name__ == '__main__':
     init_db()
 
