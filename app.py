@@ -81,7 +81,7 @@ def init_db():
 
 init_db()
 #create_status()
-app.run(debug=True)
+app.run()
 
 if __name__ == '__main__':
     #init_db()
