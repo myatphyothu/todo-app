@@ -80,9 +80,11 @@ def init_db():
     db.create_all()
 
 init_db()
+#create_status()
+app.run(debug=True)
 
 if __name__ == '__main__':
-    init_db()
+    #init_db()
 
     #create_sample_task()
     #create_status()
