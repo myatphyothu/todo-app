@@ -74,10 +74,13 @@ def create_status():
         db.session.add(Status(name=status))
     db.session.commit()
 
-if __name__ == '__main__':
+def init_db():
     db.app = app
     db.init_app(app)
     db.create_all()
+
+if __name__ == '__main__':
+    init_db()
 
     #create_sample_task()
     #create_status()
